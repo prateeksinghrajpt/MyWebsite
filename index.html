@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prateek Analytics | AI-Powered Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --bg-color: #ffffff;
+            --text-color: #0f172a;
+            --card-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        /* Infotact-style Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(37,99,235,0.9) 0%, rgba(30,64,175,0.9) 100%), 
+                        url('analytics-bg.jpg') center/cover;
+            padding: 160px 0 100px;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        /* Service Cards */
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        /* AI Assistant */
+        .ai-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 350px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .ai-assistant.active {
+            transform: translateY(0);
+        }
+
+        /* Three-dot Menu */
+        .dropdown-menu {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .dropdown-item {
+            color: var(--text-color);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(15, 23, 42, 0.95);">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-brain me-2"></i>Prateek Analytics
+            </a>
+            
+            <!-- Three-dot Menu -->
+            <div class="dropdown ms-auto me-3">
+                <button class="btn btn-link text-light" data-bs-toggle="dropdown">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#about">About</a></li>
+                    <li><a class="dropdown-item" href="#contact">Contact</a></li>
+                    <li><a class="dropdown-item" href="#careers">Careers</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#blog">Blog</a></li>
+                </ul>
+            </div>
+
+            <!-- AI Assistant Toggle -->
+            <button class="btn btn-primary" onclick="toggleAI()">
+                <i class="fas fa-robot"></i> AI Assist
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white">
+        <div class="container text-center">
+            <h1 class="display-3 fw-bold mb-4">Transform Business with AI</h1>
+            <p class="lead mb-5">Advanced Machine Learning Solutions for Enterprises</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <a href="#contact" class="btn btn-light btn-lg">Get Started</a>
+                <a href="#projects" class="btn btn-outline-light btn-lg">View Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Assistant -->
+    <div class="ai-assistant">
+        <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
+                <span>Analytics Assistant</span>
+                <button class="btn btn-sm btn-light" onclick="toggleAI()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="card-body" style="height: 300px; overflow-y: auto;">
+                <div class="alert alert-dark mb-2">🤖 How can I help you today?</div>
+            </div>
+            <div class="card-footer">
+                <div class="input-group">
+                    <input type="text" class="form-control" 
+                           placeholder="Ask about our services..." 
+                           id="aiInput"
+                           style="background: var(--bg-color); color: var(--text-color);">
+                    <button class="btn btn-primary" onclick="handleAIInput()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button class="btn btn-primary rounded-circle p-3" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun" style="display: none;"></i>
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme Management
+        function toggleTheme() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            updateThemeIcons();
+        }
+
+        function updateThemeIcons() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.querySelector('.fa-moon').style.display = isDark ? 'none' : 'block';
+            document.querySelector('.fa-sun').style.display = isDark ? 'block' : 'none';
+        }
+
+        // Initialize Theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        updateThemeIcons();
+
+        // AI Assistant
+        let aiVisible = false;
+        function toggleAI() {
+            aiVisible = !aiVisible;
+            document.querySelector('.ai-assistant').classList.toggle('active', aiVisible);
+        }
+
+        function handleAIInput() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            if(message) {
+                addMessage(message, true);
+                processQuery(message);
+                input.value = '';
+            }
+        }
+
+        function addMessage(content, isUser = false) {
+            const messagesDiv = document.querySelector('.card-body');
+            const messageEl = document.createElement('div');
+            messageEl.className = `alert ${isUser ? 'alert-primary' : 'alert-dark'} mb-2`;
+            messageEl.innerHTML = `${isUser ? '👤' : '🤖'} ${content}`;
+            messagesDiv.appendChild(messageEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function processQuery(query) {
+            const responses = {
+                'services': 'We offer: Predictive Analytics, ML Model Development, and Data Strategy Consulting.',
+                'contact': 'Email: rajputprateeksingh075@gmail.com | LinkedIn: [Your Link]',
+                'projects': 'Recent projects include customer churn prediction and sales forecasting systems.',
+                'default': 'Let me connect you with a human expert...'
+            };
+            
+            setTimeout(() => {
+                addMessage(responses[query.toLowerCase()] || responses['default']);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
